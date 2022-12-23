@@ -1,4 +1,11 @@
 node {
+    environment { 
+        registry = "jumper93/" 
+        registryCredential = 'dockerhub_id' 
+        dockerImage = '' 
+
+    } 
+
    
     def app
     stage('Clone repository') {
@@ -23,16 +30,23 @@ node {
         }
     }
 
-    stage('Push image') {
-        /* Finally, we'll push the image with two tags:
-         * First, the incremental build number from Jenkins
-         * Second, the 'latest' tag.
-         * Pushing multiple tags is cheap, as all the layers are reused. 
-         *docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials'*/
-           sh 'sudo docker login -u "jumper93" -S -p "20103485169Docs!@" docker.io'
+    stage('Deploy our image') { 
+
+            steps { 
+
+                script { 
+
+                    docker.withRegistry( '', registryCredential ) { 
+
+                        app.push("${env.BUILD_NUMBER}")
+                        app.push("latest") 
+
+                    }
+
+                } 
+
+            }
+        } 
                
-            app.push("${env.BUILD_NUMBER}")
-            app.push("latest")
-        
-    }
+   }
 }
