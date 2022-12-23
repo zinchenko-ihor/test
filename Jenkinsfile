@@ -1,11 +1,5 @@
 node {
    
-    environment {
-        registry = "jumper93/zin4y_node"   
-        registryCredential = 'c6f696d0-3272-44b1-a4ce-52d7860e3b5e'
-
-    }
-    
     def app
     stage('Clone repository') {
         /* Let's make sure we have the repository cloned to our workspace */
@@ -35,8 +29,8 @@ node {
          * Second, the 'latest' tag.
          * Pushing multiple tags is cheap, as all the layers are reused. 
          *docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials'*/
-         
-           docker.withRegistry( '', registryCredential )     
+           sh 'sudo docker login -u "jumper93" -p "20103485169Docs!@" --stdin docker.io'
+               
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
         
