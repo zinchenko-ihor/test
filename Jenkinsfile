@@ -11,7 +11,7 @@ node {
         /* This builds the actual image; synonymous to
          * docker build on the command line */
 
-        app = docker.build("zinchenko-ihor/test")
+        app = docker.build('zinchenko-ihor/test')
     }
 
     stage('Test image') {
