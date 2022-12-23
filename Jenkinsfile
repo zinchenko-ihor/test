@@ -1,13 +1,6 @@
 node {
-    environment { 
-        registry = "jumper93/" 
-        registryCredential = 'dockerhub_id' 
-        dockerImage = '' 
-
-    } 
-
-   
     def app
+
     stage('Clone repository') {
         /* Let's make sure we have the repository cloned to our workspace */
 
@@ -18,7 +11,7 @@ node {
         /* This builds the actual image; synonymous to
          * docker build on the command line */
 
-        app = docker.build('zinchenko-ihor/test')
+        app = docker.build("zinchenko-ihor/jenkins_test/node")
     }
 
     stage('Test image') {
@@ -30,23 +23,16 @@ node {
         }
     }
 
-    stage('Deploy our image') { 
-
-            steps { 
-
-                script { 
-
-                    docker.withRegistry( '', registryCredential ) { 
-
-                        app.push("${env.BUILD_NUMBER}")
-                        app.push("latest") 
-
-                    }
-
-                } 
-
-            }
-        } 
+    stage('Push image') {
+        /* Finally, we'll push the image with two tags:
+         * First, the incremental build number from Jenkins
+         * Second, the 'latest' tag.
+         * Pushing multiple tags is cheap, as all the layers are reused. 
+         *docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials'*/
+           sh 'sudo -S docker login -u "jumper93" -p "12345QazWsx" docker.io'
                
-   }
-
+            app.push("${env.BUILD_NUMBER}")
+            app.push("latest")
+        
+    }
+}
