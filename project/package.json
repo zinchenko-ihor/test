@@ -1,0 +1,15 @@
+{
+  "name": "my-app",
+  "version": "1.0.0",
+  "description": "My Node.js app",
+  "type": "module",
+  "main": "index.cjs",
+  "scripts": {
+    "start": "node index.cjs"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "vue": "^2.6.14",
+    "vue-router": "^3.5.2"
+  }
+}

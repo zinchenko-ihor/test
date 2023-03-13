@@ -1,0 +1,23 @@
+FROM node:14
+
+RUN useradd --user-group --create-home --shell /bin/false app
+
+ENV HOME=/home/app
+
+COPY package*.json $HOME/app/
+COPY index.cjs .
+#COPY package-lock.json $HOME/app/
+RUN chown -R app:app $HOME/*
+
+USER app
+WORKDIR $HOME/app
+RUN rm -rf node_modules
+RUN npm install
+RUN npm install --save vue-router
+#RUN npm install --save '@/views'
+
+COPY . $HOME/app
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
